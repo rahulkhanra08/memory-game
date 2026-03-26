@@ -3,7 +3,7 @@
 
 <head>
 
-<title>Memory Game</title>
+<title>Memory Game Pro</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -11,27 +11,50 @@
 
 <body>
 
-<h1>Memory Game 🎮</h1>
+<div class="container">
 
-<div class="game">
+<h1>Memory Game Pro</h1>
 
-<div class="card" data-icon="🍎">?</div>
-<div class="card" data-icon="🍎">?</div>
+<div class="stats">
 
-<div class="card" data-icon="🚀">?</div>
-<div class="card" data-icon="🚀">?</div>
+<div class="box">
+Moves
+<span id="moves">0</span>
+</div>
 
-<div class="card" data-icon="🎧">?</div>
-<div class="card" data-icon="🎧">?</div>
+<div class="box">
+Time
+<span id="timer">0</span>
+</div>
 
-<div class="card" data-icon="⚽">?</div>
-<div class="card" data-icon="⚽">?</div>
+<div class="box">
+Score
+<span id="stars">⭐⭐⭐</span>
+</div>
 
 </div>
 
-<button onclick="restart()">Restart</button>
+<div class="game" id="game"></div>
 
-<p id="moves">Moves: 0</p>
+<button onclick="restart()">Restart Game</button>
+
+</div>
+
+<div class="modal" id="modal">
+
+<div class="modal-content">
+
+<h2>You Won! 🎉</h2>
+
+<p id="finalTime"></p>
+
+<p id="finalMoves"></p>
+
+<button onclick="restart()">Play Again</button>
+
+</div>
+
+</div>
 
 <script src="script.js"></script>
 

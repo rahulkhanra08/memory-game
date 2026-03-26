@@ -1,50 +1,124 @@
-let cards=document.querySelectorAll(".card");
+let icons=["🍎","🍎","🚀","🚀","🎧","🎧","⚽","⚽"];
 
-let firstCard=null;
+let game=document.getElementById("game");
 
-let secondCard=null;
+let first=null;
+
+let second=null;
 
 let lock=false;
 
 let moves=0;
 
-cards.forEach(card=>{
+let matches=0;
+
+let time=0;
+
+let started=false;
+
+let timer=setInterval(()=>{
+
+if(started){
+
+time++;
+
+document.getElementById("timer").innerHTML=time+"s";
+
+}
+
+},1000);
+
+function createBoard(){
+
+game.innerHTML="";
+
+icons.sort(()=>0.5-Math.random());
+
+icons.forEach(icon=>{
+
+let card=document.createElement("div");
+
+card.className="card";
+
+card.dataset.icon=icon;
+
+card.innerHTML=`
+
+<div class="front">?</div>
+
+<div class="back">${icon}</div>
+
+`;
 
 card.addEventListener("click",flip);
 
+game.appendChild(card);
+
 });
+
+}
+
+createBoard();
 
 function flip(){
 
 if(lock) return;
 
-if(this===firstCard) return;
+if(this===first) return;
 
-this.innerHTML=this.dataset.icon;
+started=true;
 
-if(!firstCard){
+this.classList.add("flip");
 
-firstCard=this;
+if(!first){
+
+first=this;
 
 return;
 
 }
 
-secondCard=this;
+second=this;
 
 moves++;
 
-document.getElementById("moves").innerHTML="Moves: "+moves;
+document.getElementById("moves").innerHTML=moves;
 
-checkMatch();
+updateStars();
+
+check();
 
 }
 
-function checkMatch(){
+function updateStars(){
 
-if(firstCard.dataset.icon===secondCard.dataset.icon){
+if(moves>12){
+
+document.getElementById("stars").innerHTML="⭐⭐";
+
+}
+
+if(moves>18){
+
+document.getElementById("stars").innerHTML="⭐";
+
+}
+
+}
+
+function check(){
+
+if(first.dataset.icon===second.dataset.icon){
+
+matches++;
 
 reset();
+
+if(matches==4){
+
+win();
+
+}
 
 }
 
@@ -54,13 +128,13 @@ lock=true;
 
 setTimeout(()=>{
 
-firstCard.innerHTML="?";
+first.classList.remove("flip");
 
-secondCard.innerHTML="?";
+second.classList.remove("flip");
 
 reset();
 
-},800);
+},700);
 
 }
 
@@ -68,12 +142,40 @@ reset();
 
 function reset(){
 
-[firstCard,secondCard,lock]=[null,null,false];
+[first,second,lock]=[null,null,false];
+
+}
+
+function win(){
+
+started=false;
+
+document.getElementById("modal").style.display="flex";
+
+document.getElementById("finalTime").innerHTML="Time: "+time+"s";
+
+document.getElementById("finalMoves").innerHTML="Moves: "+moves;
 
 }
 
 function restart(){
 
-location.reload();
+moves=0;
+
+matches=0;
+
+time=0;
+
+started=false;
+
+document.getElementById("moves").innerHTML="0";
+
+document.getElementById("timer").innerHTML="0s";
+
+document.getElementById("stars").innerHTML="⭐⭐⭐";
+
+document.getElementById("modal").style.display="none";
+
+createBoard();
 
 }
